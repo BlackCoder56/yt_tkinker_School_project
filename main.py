@@ -2,11 +2,14 @@ from tkinter import *
 from PIL import ImageTk
 from tkinter import messagebox
 
+
 def btn_login():
     if username_input.get() == '' or password_input == '':
         messagebox.showerror('Error', 'All fields are required!')
     elif username_input.get() == 'Elly' or password_input.get() == '12345':
         messagebox.showinfo('Success', f'Welcome {username_input.get()}\t\t')
+        window.destroy()
+        import dashboard
     else:
         messagebox.showerror('Error', 'Please enter correct credentials!!')
         username_input.delete(0, END)
@@ -16,7 +19,7 @@ def btn_login():
 window = Tk()
 window.iconbitmap('app.ico')
 window.title('School management system')
-window.geometry('1280x685+0+0')
+window.geometry('1280x685+-8+0')
 window.resizable(False, False)
 
 background = ImageTk.PhotoImage(file='bg.jpg')
@@ -48,7 +51,7 @@ password_label.grid(row=2, column=0, padx=10, pady=10, sticky='w')
 password_input = Entry(login_frame, font=('times new roman', 16, 'bold'), bd=2, width=20, show='*')
 password_input.grid(row=2, column=1, padx=10)
 
-login_btn = Button(login_frame, text='Login', font=('arial', 18, 'bold'), fg='white', bg='navy blue', width=10,
+login_btn = Button(login_frame, text='Login', font=('arial', 18, 'bold'), fg='white', bg='navy', width=10,
                    activebackground='VioletRed1', activeforeground='white', command=btn_login)
 login_btn.grid(row=3, column=0, columnspan=2, pady=30, padx=50)
 
