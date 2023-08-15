@@ -60,25 +60,61 @@ top_image = ImageTk.PhotoImage(file='students.png')
 top_image_label = Label(left_frame, image=top_image)
 top_image_label.grid(row=0, column=0, pady=20)
 
-add_student_btn = ttk.Button(left_frame, text='Add Students', width=25)
+add_student_btn = ttk.Button(left_frame, text='Add Students', width=25, state=DISABLED)
 add_student_btn.grid(row=1, column=0, pady=10, padx=10)
 
-search_student_btn = ttk.Button(left_frame, text='Search Students', width=25)
+search_student_btn = ttk.Button(left_frame, text='Search Students', width=25, state=DISABLED)
 search_student_btn.grid(row=2, column=0, pady=10)
 
-delete_student_btn = ttk.Button(left_frame, text='Delete Students', width=25)
+delete_student_btn = ttk.Button(left_frame, text='Delete Students', width=25, state=DISABLED)
 delete_student_btn.grid(row=3, column=0, pady=10)
 
-update_student_btn = ttk.Button(left_frame, text='Update Students', width=25)
+update_student_btn = ttk.Button(left_frame, text='Update Students', width=25, state=DISABLED)
 update_student_btn.grid(row=4, column=0, pady=10)
 
-show_student_btn = ttk.Button(left_frame, text='Show Students', width=25)
+show_student_btn = ttk.Button(left_frame, text='Show Students', width=25, state=DISABLED)
 show_student_btn.grid(row=5, column=0, pady=10)
 
-export_data_btn = ttk.Button(left_frame, text='Export Data', width=25)
+export_data_btn = ttk.Button(left_frame, text='Export Data', width=25, state=DISABLED)
 export_data_btn.grid(row=6, column=0, pady=10)
 
 logout_btn = ttk.Button(left_frame, text='Logout', width=25)
 logout_btn.grid(row=7, column=0, pady=40)
+
+right_frame = Frame(root)
+right_frame.place(x=300, y=80, width=960, height=550)
+
+# code for creating scrollbars on the treeview
+scrollBar_x = Scrollbar(right_frame, orient=HORIZONTAL)
+scrollBar_y = Scrollbar(right_frame, orient=VERTICAL)
+
+# creating treeview
+the_table = ttk.Treeview(right_frame, columns=('Id', 'Name',
+                                               'Telephone', 'Email',
+                                               'Address', 'Gender',
+                                               'D.O.B', 'Added Date', 'Added Time',),
+                         xscrollcommand=scrollBar_x.set, yscrollcommand=scrollBar_y.set)
+# code for mapping scrollbars to the treeview using config method
+scrollBar_x.config(command=the_table.xview)
+scrollBar_y.config(command=the_table.yview)
+
+# packing / placing the scrollbars to the frame
+scrollBar_x.pack(side=BOTTOM, fill=X)
+scrollBar_y.pack(side=RIGHT, fill=Y)
+
+the_table.pack(fill=BOTH, expand=1)
+
+# adding column headers
+the_table.heading('Id', text='Id')
+the_table.heading('Name', text='Name')
+the_table.heading('Telephone', text='Telephone')
+the_table.heading('Email', text='Email')
+the_table.heading('Address', text='Address')
+the_table.heading('Gender', text='Gender')
+the_table.heading('D.O.B', text='D.O.B')
+the_table.heading('Added Date', text='Added Date')
+the_table.heading('Added Time', text='Added Time')
+
+the_table.config(show='headings')
 
 root.mainloop()
