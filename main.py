@@ -3,10 +3,11 @@ from PIL import ImageTk
 from tkinter import messagebox
 
 
+# Login function
 def btn_login():
     if username_input.get() == '' or password_input == '':
         messagebox.showerror('Error', 'All fields are required!')
-    elif username_input.get() == 'Elly' or password_input.get() == '12345':
+    elif username_input.get() == 'elly' or password_input.get() == '12345':
         messagebox.showinfo('Success', f'Welcome {username_input.get()}\t\t')
         window.destroy()
         import dashboard
@@ -14,8 +15,10 @@ def btn_login():
         messagebox.showerror('Error', 'Please enter correct credentials!!')
         username_input.delete(0, END)
         password_input.delete(0, END)
+        username_input.focus()
 
 
+# Login UI Design
 window = Tk()
 window.iconbitmap('app.ico')
 window.title('School management system')
