@@ -52,7 +52,7 @@ def search_4_student():
     email_input = Entry(search_student_window, font=('times new roman', 20))
     email_input.grid(row=3, column=1, pady=10, padx=10, sticky='w')
 
-    address_label = Label(search_student_window, text='Addess', font=('times new roman', 20, 'bold'), fg='DeepPink')
+    address_label = Label(search_student_window, text='Address', font=('times new roman', 20, 'bold'), fg='DeepPink')
     address_label.grid(row=4, column=0, pady=10, padx=10)
     address_input = Entry(search_student_window, font=('times new roman', 20))
     address_input.grid(row=4, column=1, pady=10, padx=10, sticky='w')
@@ -152,49 +152,128 @@ def add_student():
     a_submit_btn.grid(row=7, column=0, columnspan=2, padx=10, pady=20)
 
 
+# Funtion to update data
+def update_student_data():
+    def update_tbl():
+        query = 'update student set name=%s, mobile=%s,email=%s,address=%s, gender=%s,dob=%s,date=%s,time=%s where id=%s'
+        my_cursor.execute(query, (name_input.get(), phone_input.get(), email_input.get(), address_input.get(),
+                                  gender_input.get(), dob_input.get(), date, c_time, id_input.get()))
+        conn.commit()
+        display_table()
+        messagebox.showinfo('Success', f"{name_input.get()}'s data has been updated successfully!",
+                            parent=update_student_window)
+        update_student_window.destroy()
+
+    update_student_window = Toplevel()
+    update_student_window.title('Update Student')
+    update_student_window.grab_set()
+    update_student_window.resizable(False, False)
+    id_label = Label(update_student_window, text='Id', font=('times new roman', 20, 'bold'), fg='DeepPink')
+    id_label.grid(row=0, column=0, pady=10, padx=10)
+    id_input = Entry(update_student_window, font=('times new roman', 20))
+    id_input.grid(row=0, column=1, pady=10, padx=10, sticky='W')
+
+    name_label = Label(update_student_window, text='Name', font=('times new roman', 20, 'bold'), fg='DeepPink')
+    name_label.grid(row=1, column=0, pady=10, padx=10)
+    name_input = Entry(update_student_window, font=('times new roman', 20))
+    name_input.grid(row=1, column=1, pady=10, padx=10, sticky='w')
+
+    phone_label = Label(update_student_window, text='Phone', font=('times new roman', 20, 'bold'), fg='DeepPink')
+    phone_label.grid(row=2, column=0, pady=10, padx=10)
+    phone_input = Entry(update_student_window, font=('times new roman', 20))
+    phone_input.grid(row=2, column=1, pady=10, padx=10, sticky='w')
+
+    email_label = Label(update_student_window, text='Email', font=('times new roman', 20, 'bold'), fg='DeepPink')
+    email_label.grid(row=3, column=0, pady=10, padx=10)
+    email_input = Entry(update_student_window, font=('times new roman', 20))
+    email_input.grid(row=3, column=1, pady=10, padx=10, sticky='w')
+
+    address_label = Label(update_student_window, text='Address', font=('times new roman', 20, 'bold'), fg='DeepPink')
+    address_label.grid(row=4, column=0, pady=10, padx=10)
+    address_input = Entry(update_student_window, font=('times new roman', 20))
+    address_input.grid(row=4, column=1, pady=10, padx=10, sticky='w')
+
+    gender_label = Label(update_student_window, text='Gender', font=('times new roman', 20, 'bold'), fg='DeepPink')
+    gender_label.grid(row=5, column=0, pady=10, padx=10)
+    gender_input = Entry(update_student_window, font=('times new roman', 20))
+    gender_input.grid(row=5, column=1, pady=10, padx=10, sticky='w')
+
+    dob_label = Label(update_student_window, text='DOB', font=('times new roman', 20, 'bold'), fg='DeepPink')
+    dob_label.grid(row=6, column=0, pady=10, padx=10)
+    dob_input = Entry(update_student_window, font=('times new roman', 20))
+    dob_input.grid(row=6, column=1, pady=10, padx=10, sticky='w')
+
+    a_submit_btn = ttk.Button(update_student_window, text='UPDATE', command=update_tbl)
+    a_submit_btn.grid(row=7, column=0, columnspan=2, padx=10, pady=20)
+
+    the_index = the_table.focus()
+    content = the_table.item(the_index)
+    list_content = content['values']
+
+    id_input.insert(0, list_content[0])
+    name_input.insert(0, list_content[1])
+    phone_input.insert(0, f'0{list_content[2]}')
+    email_input.insert(0, list_content[3])
+    address_input.insert(0, list_content[4])
+    gender_input.insert(0, list_content[5])
+    dob_input.insert(0, list_content[6])
+
+
+# Function to log out
+def logout():
+    result = messagebox.askyesno('Confirm', 'Are you sure you want to exit?')
+    if result:
+        root.destroy()
+    else:
+        pass
+
+
 # function to connect to the database
 def database_connection_function():
     def connect_2_db():
 
         global my_cursor, conn
-        #  if hostname_entry.get() == '' or username_entry.get() == '' or server_password_entry == '':
-        #   messagebox.showerror('Error', 'All fields required to connect to the server', parent=popup1)
-        # else:
-        try:
-            conn = pymysql.connect(host='localhost', user='root',
-                                   password='swap2')
-            my_cursor = conn.cursor()
-            # messagebox.showinfo('Success', 'Connection Successful', parent=popup1)
+        if hostname_entry.get() == '' or username_entry.get() == '' or server_password_entry == '':
+            messagebox.showerror('Error', 'All fields required to connect to the server', parent=popup1)
+        else:
+            try:
+                conn = pymysql.connect(host=hostname_entry.get(), user=username_entry.get(),
+                                       password=server_password_entry.get())
+                my_cursor = conn.cursor()
+                messagebox.showinfo('Success', 'Connection Successful', parent=popup1)
+                popup1.destroy()
 
-            popup1.destroy()
-        except:
-            messagebox.showerror('Error', 'Invalid or incorrect details', parent=popup1)
+                try:
+                    query = 'create database student_db'
+                    my_cursor.execute(query)
+                    query1 = 'use student_db'
+                    my_cursor.execute(query1)
+                    query2 = 'create table student(id int not null primary key, name varchar(30), mobile varchar(10), ' \
+                             'email varchar(30), address varchar(40), gender varchar(30),' \
+                             'dob varchar(20), date varchar(50), time varchar(50))'
+                    my_cursor.execute(query2)
+                except:
+                    query3 = 'use student_db'
+                    my_cursor.execute(query3)
+                    add_student_btn.config(state=NORMAL)
+                    search_student_btn.config(state=NORMAL)
+                    delete_student_btn.config(state=NORMAL)
+                    update_student_btn.config(state=NORMAL)
+                    show_student_btn.config(state=NORMAL)
+                    export_data_btn.config(state=NORMAL)
+                    display_table()
 
-        try:
-            query = 'create database student_db'
-            my_cursor.execute(query)
-            query1 = 'use student_db'
-            my_cursor.execute(query1)
-            query2 = 'create table student(id int not null primary key, name varchar(30), mobile varchar(10), ' \
-                     'email varchar(30), address varchar(40), gender varchar(30),' \
-                     'dob varchar(20), date varchar(50), time varchar(50))'
-            my_cursor.execute(query2)
-        except:
-            query3 = 'use student_db'
-            my_cursor.execute(query3)
-            add_student_btn.config(state=NORMAL)
-            search_student_btn.config(state=NORMAL)
-            delete_student_btn.config(state=NORMAL)
-            update_student_btn.config(state=NORMAL)
-            show_student_btn.config(state=NORMAL)
-            export_data_btn.config(state=NORMAL)
-            display_table()
+            except:
+                messagebox.showerror('Error', 'Invalid or incorrect details. Please try again!', parent=popup1)
+                hostname_entry.delete(0, END)
+                username_entry.delete(0, END)
+                server_password_entry.delete(0, END)
 
     popup1 = Toplevel()
     popup1.grab_set()
     popup1.resizable(False, False)
-    popup1.title('Connect to the Database')
-    popup1.geometry('400x250+840+100')
+    popup1.title('Connect to the Database to access student data!')
+    popup1.geometry('440x250+820+100')
 
     hostname = Label(popup1, text='Host name', font=('arial', 14, 'bold'), fg='black')
     hostname.grid(row=0, column=0, padx=20, pady=12)
@@ -219,6 +298,7 @@ def database_connection_function():
 
 # function to grab the current time and date
 def date_time():
+    global date, c_time
     date = time.strftime('%d/%m/%Y')
     c_time = time.strftime('%H:%M:%S')
     date_time_label.config(text=f'   Date: {date}\nTime: {c_time}')
@@ -287,7 +367,8 @@ search_student_btn.grid(row=2, column=0, pady=10)
 delete_student_btn = ttk.Button(left_frame, text='Delete Students', width=25, state=DISABLED, command=delete_student)
 delete_student_btn.grid(row=3, column=0, pady=10)
 
-update_student_btn = ttk.Button(left_frame, text='Update Students', width=25, state=DISABLED)
+update_student_btn = ttk.Button(left_frame, text='Update Students', width=25, state=DISABLED,
+                                command=update_student_data)
 update_student_btn.grid(row=4, column=0, pady=10)
 
 show_student_btn = ttk.Button(left_frame, text='Show Students', width=25, state=DISABLED, command=display_table)
@@ -296,7 +377,7 @@ show_student_btn.grid(row=5, column=0, pady=10)
 export_data_btn = ttk.Button(left_frame, text='Export Data', width=25, state=DISABLED)
 export_data_btn.grid(row=6, column=0, pady=10)
 
-logout_btn = ttk.Button(left_frame, text='Logout', width=25)
+logout_btn = ttk.Button(left_frame, text='Logout', width=25, command=logout)
 logout_btn.grid(row=7, column=0, pady=40)
 
 right_frame = Frame(root)
@@ -346,7 +427,7 @@ the_table.column('Added Time', width=80, anchor=CENTER)
 
 # Additional design to the treeview
 style = ttk.Style()
-style.configure('Treeview', rowheight=20, font=('arial', 12, 'bold'), background='light gray', foreground='black',
+style.configure('Treeview', rowheight=20, font=('arial', 12, 'bold'), background='light gray', foreground='navy',
                 fieldbackground='slate gray')
 style.configure('Treeview.Heading', font=('arial', 12, 'bold'), foreground='navy')
 
