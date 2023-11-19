@@ -5,6 +5,7 @@ import time
 import ttkthemes
 from tkinter import ttk
 import pymysql
+import psycopg2
 
 
 # Function to display data in the treeview
@@ -237,31 +238,43 @@ def database_connection_function():
             messagebox.showerror('Error', 'All fields required to connect to the server', parent=popup1)
         else:
             try:
-                conn = pymysql.connect(host=hostname_entry.get(), user=username_entry.get(),
-                                       password=server_password_entry.get())
+                # conn = pymysql.connect(host=hostname_entry.get(), user=username_entry.get(),
+                #                        password=server_password_entry.get())
+                DB_Name = 'student_db'
+                conn = psycopg2.connect(dbname=DB_Name, host=hostname_entry.get(), user=username_entry.get(),
+                                        password=server_password_entry.get())
+                # postgresql_psycopg2
                 my_cursor = conn.cursor()
                 messagebox.showinfo('Success', 'Connection Successful', parent=popup1)
                 popup1.destroy()
-
-                try:
-                    query = 'create database student_db'
-                    my_cursor.execute(query)
-                    query1 = 'use student_db'
-                    my_cursor.execute(query1)
-                    query2 = 'create table student(id int not null primary key, name varchar(30), mobile varchar(10), ' \
-                             'email varchar(30), address varchar(40), gender varchar(30),' \
-                             'dob varchar(20), date varchar(50), time varchar(50))'
-                    my_cursor.execute(query2)
-                except:
-                    query3 = 'use student_db'
-                    my_cursor.execute(query3)
-                    add_student_btn.config(state=NORMAL)
-                    search_student_btn.config(state=NORMAL)
-                    delete_student_btn.config(state=NORMAL)
-                    update_student_btn.config(state=NORMAL)
-                    show_student_btn.config(state=NORMAL)
-                    export_data_btn.config(state=NORMAL)
-                    display_table()
+                add_student_btn.config(state=NORMAL)
+                search_student_btn.config(state=NORMAL)
+                delete_student_btn.config(state=NORMAL)
+                update_student_btn.config(state=NORMAL)
+                show_student_btn.config(state=NORMAL)
+                export_data_btn.config(state=NORMAL)
+                display_table()
+                # try:
+                #     query = 'create database student_db'
+                #     my_cursor.execute(query)
+                #     # query1 = 'use student_db'
+                #     query1 = '\\c student_db'
+                #     my_cursor.execute(query1)
+                #     query2 = 'create table student(id int not null primary key, name varchar(30), mobile varchar(10),
+                #     [' \
+                #              'email varchar(30), address varchar(40), gender varchar(30),' \
+                #              'dob varchar(20), date varchar(50), time varchar(50))'
+                #     my_cursor.execute(query2)
+                # except:
+                #     query3 = '\\c student_db'
+                #     my_cursor.execute(query3)
+                #     add_student_btn.config(state=NORMAL)
+                #     search_student_btn.config(state=NORMAL)
+                #     delete_student_btn.config(state=NORMAL)
+                #     update_student_btn.config(state=NORMAL)
+                #     show_student_btn.config(state=NORMAL)
+                #     export_data_btn.config(state=NORMAL)
+                #     display_table()
 
             except:
                 messagebox.showerror('Error', 'Invalid or incorrect details. Please try again!', parent=popup1)
