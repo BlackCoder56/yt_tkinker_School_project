@@ -7,7 +7,7 @@ from tkinter import messagebox
 def btn_login():
     if username_input.get() == '' or password_input == '':
         messagebox.showerror('Error', 'All fields are required!')
-    elif username_input.get() == 'elly' or password_input.get() == '12345':
+    elif username_input.get() == 'maria' or password_input.get() == '12345':
         messagebox.showinfo('Success', f'Welcome {username_input.get()}\t\t')
         window.destroy()
         import dashboard

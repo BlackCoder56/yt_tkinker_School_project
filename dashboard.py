@@ -342,7 +342,7 @@ root = ttkthemes.ThemedTk()
 root.get_themes()
 root.set_theme('radiance')
 root.resizable(False, False)
-root.title("School Management School")
+root.title("Lion School Management School")
 root.iconbitmap('app.ico')
 root.geometry('1280x685+-8+0')
 
@@ -354,7 +354,7 @@ date_time_label = Label(root, text='Time', font=('Arial', 16, 'bold'), fg='india
 date_time_label.place(y=10, x=5)
 date_time()
 
-the_text = 'Step by Step Secondary School'
+the_text = 'Lion Secondary School'
 title_label = Label(root, text=the_text, font=('Times new roman', 26, 'bold'), fg='DeepPink')
 title_label.place(x=400, y=10)
 text_animation()
